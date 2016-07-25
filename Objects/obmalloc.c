@@ -197,7 +197,7 @@ static int running_on_valgrind = -1;
  */
 #ifdef WITH_MEMORY_LIMITS
 #ifndef SMALL_MEMORY_LIMIT
-#define SMALL_MEMORY_LIMIT      (64 * 1024 * 1024)      /* 64 MB -- more? */
+#define SMALL_MEMORY_LIMIT      (512 * 1024 * 1024)      /* 64 MB -- more? */
 #endif
 #endif
 
@@ -214,7 +214,7 @@ static int running_on_valgrind = -1;
  * Arenas are allocated with mmap() on systems supporting anonymous memory
  * mappings to reduce heap fragmentation.
  */
-#define ARENA_SIZE              (256 << 10)     /* 256KB */
+#define ARENA_SIZE              (256 * 1024 * 1024)     /* 256MB */
 
 #ifdef WITH_MEMORY_LIMITS
 #define MAX_ARENAS              (SMALL_MEMORY_LIMIT / ARENA_SIZE)
@@ -1064,7 +1064,7 @@ PyObject_Free(void *p)
              *    nfreepools.
              * 4. Else there's nothing more to do.
              */
-            if (nf == ao->ntotalpools) {
+            if (nf == ao->ntotalpools && 0) { // NEVER FREE
                 /* Case 1.  First unlink ao from usable_arenas.
                  */
                 assert(ao->prevarena == NULL ||
